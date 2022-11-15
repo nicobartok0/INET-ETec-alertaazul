@@ -15,9 +15,10 @@ mysql = MySQL(app)
 # -- CREAR ÁREA --
 @app.route('/crear_area', methods=['POST'])
 def crear_area():
-    nombre = request.json['nombre_area']
+    content = request.json['nombre_area']
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO areas (nombre) VALUES (' + nombre, + ')')
+    cur.execute('INSERT INTO areas(nombre) VALUES (%s)', (content))
+    return(jsonify(content))
 
 # -- CREAR USUARIO --
 @app.route('/crear_usuario', methods=['POST'])
