@@ -13,9 +13,9 @@ app.config['MYSQL_DB'] = 'azul_db'
 mysql = MySQL(app)
 
 # -- CREAR ÁREA --
-#@app.route('/crear_area')
-#def crear_area():
-    #nombre = request.form['nombre_area']
+@app.route('/crear_area')
+def crear_area():
+    nombre = request.form['nombre_area']
 
 # -- CREAR USUARIO --
 @app.route('/crear_usuario', methods=['POST'])
@@ -26,6 +26,7 @@ def crear_usuario():
     cur = mysql.connection.cursor()
     cur.execute('INSERT INTO usuarios (nombre_usuario, contraseña, id_area_fk) VALUES (%s, %s, %s)', (nombre_usuario, contraseña, area))
 
+# -- VER USUARIOS --
 @app.route('/ver_usuarios')
 def ver_usuarios():
     cur = mysql.connection.cursor()
@@ -33,9 +34,14 @@ def ver_usuarios():
     usuarios = cur.fetchall()
     return(jsonify(usuarios))
 
+# -- VER ALERTAS --
 @app.route('/ver_alertas')
 def ver_alertas():
     cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM alertas')
+    alertas = cur.fetchone()
+    return(jsonify(str(alertas)))
+
 
 
 
