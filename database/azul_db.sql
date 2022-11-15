@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 12:25:17
+-- Tiempo de generación: 15-11-2022 a las 14:50:16
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -30,9 +30,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `alertas` (
   `id_alerta` int(11) NOT NULL,
   `id_usuario_fk` int(11) NOT NULL,
-  `lugar` varchar(255) NOT NULL,
-  `hora` time NOT NULL
+  `origen` varchar(255) NOT NULL,
+  `hora_inicio` time NOT NULL,
+  `hora_fin` time NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `tipo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `alertas`
+--
+
+INSERT INTO `alertas` (`id_alerta`, `id_usuario_fk`, `origen`, `hora_inicio`, `hora_fin`, `estado`, `fecha_inicio`, `fecha_fin`, `tipo`) VALUES
+(1, 1, 'Banio', '00:00:15', '00:00:00', 'Sin atender', '0000-00-00', '0000-00-00', 'Emergencia');
 
 -- --------------------------------------------------------
 
@@ -44,6 +56,13 @@ CREATE TABLE `areas` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `areas`
+--
+
+INSERT INTO `areas` (`id`, `nombre`) VALUES
+(1, 'area prueba');
 
 -- --------------------------------------------------------
 
@@ -71,6 +90,13 @@ CREATE TABLE `personas` (
   `tipo_persona` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `personas`
+--
+
+INSERT INTO `personas` (`id_persona`, `nombre_persona`, `apellido_persona`, `dni_persona`, `tipo_persona`) VALUES
+(1, 'John', 'Doe', 12345678, 'Paciente');
+
 -- --------------------------------------------------------
 
 --
@@ -84,6 +110,13 @@ CREATE TABLE `usuarios` (
   `id_area_fk` int(11) NOT NULL,
   `contraseña` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `id_persona_fk`, `id_area_fk`, `contraseña`) VALUES
+(1, 'johndoeuser', 1, 1, '123321');
 
 --
 -- Índices para tablas volcadas
@@ -131,13 +164,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `id_alerta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_alerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `fichas`
@@ -149,13 +182,13 @@ ALTER TABLE `fichas`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
