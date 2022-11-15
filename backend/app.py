@@ -17,7 +17,10 @@ mysql = MySQL(app)
 def crear_area():
     content = request.json['nombre_area']
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO areas(nombre) VALUES (%s)', (content))
+    #query = 'INSERT INTO areas(nombre) VALUES ('+ '"' + (content) + '"' +')'
+    #print(query)
+    cur.execute('INSERT INTO areas(nombre) VALUES ('+ '"' + content + '"' +')')
+    mysql.connection.commit()
     return(jsonify(content))
 
 # -- CREAR USUARIO --
@@ -26,6 +29,7 @@ def crear_usuario():
     nombre_usuario = request.json['nombre_usuario']
     contraseña = request.json['contraseña']
     area = request.json['area']
+    
     cur = mysql.connection.cursor()
     cur.execute('INSERT INTO usuarios (nombre_usuario, contraseña, id_area_fk) VALUES (%s, %s, %s)', (nombre_usuario, contraseña, area))
 
