@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 14:50:16
+-- Tiempo de generación: 15-11-2022 a las 18:59:07
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `azul_db`
+-- Base de datos: `inet_db`
 --
 
 -- --------------------------------------------------------
@@ -62,7 +62,12 @@ CREATE TABLE `areas` (
 --
 
 INSERT INTO `areas` (`id`, `nombre`) VALUES
-(1, 'area prueba');
+(1, 'area prueba'),
+(18, 'area2'),
+(21, 'area2'),
+(23, 'area3'),
+(25, 'area4'),
+(26, 'area1');
 
 -- --------------------------------------------------------
 
@@ -170,7 +175,7 @@ ALTER TABLE `alertas`
 -- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `fichas`
