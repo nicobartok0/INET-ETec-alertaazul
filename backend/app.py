@@ -13,10 +13,30 @@ app.config['MYSQL_DB'] = 'azul_db'
 mysql = MySQL(app)
 
 # -- CREAR ÁREA --
-@app.route('/crear_area')
-def crear_area():
-    nombre = request.form['nombre_area']
-    
+#@app.route('/crear_area')
+#def crear_area():
+    #nombre = request.form['nombre_area']
+
+# -- CREAR USUARIO --
+@app.route('/crear_usuario', methods=['POST'])
+def crear_usuario():
+    nombre_usuario = request.form['nombre_usuario']
+    contraseña = request.form['contraseña']
+    area = request.form['area']
+    cur = mysql.connection.cursor()
+    cur.execute('INSERT INTO usuarios (nombre_usuario, contraseña, id_area_fk) VALUES (%s, %s, %s)', (nombre_usuario, contraseña, area))
+
+@app.route('/ver_usuarios')
+def ver_usuarios():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT nombre_usuario FROM usuarios')
+    usuarios = cur.fetchall()
+    return(jsonify(usuarios))
+
+@app.route('/ver_alertas')
+def ver_alertas():
+    cur = mysql.connection.cursor()
+
 
 
 # -- BUCLE PRINCIPAL DE LA APP --
