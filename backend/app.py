@@ -43,9 +43,44 @@ def crear_usuario():
     nombre_usuario = request.json['nombre_usuario']
     contraseña = request.json['contraseña']
     area = request.json['area']
+    dni_persona = request.json['dni_persona']
     cur = mysql.connection.cursor()
-    cur.close()
-    cur.execute('INSERT INTO usuarios (nombre_usuario, contraseña, id_area_fk) VALUES (%s, %s, %s)', (nombre_usuario, contraseña, area))
+    cur.execute('SELECT id_persona FROM personas WHERE dni_persona = %s' % (dni_persona))
+    id_persona = cur.fetchone()
+    id_persona_str = str(id_persona)
+    id_persona_str = id_persona_str.replace('(', '')
+    id_persona_str = id_persona_str.replace(')', '')
+    id_persona_str = id_persona_str.replace(',', '')
+    cur.execute('SELECT id FROM areas WHERE nombre = "' + '%s' % (area) + '"')
+    id_area = cur.fetchone()
+    id_area_str = str(id_area)
+    id_area_str = id_area_str.replace('(', '')
+    id_area_str = id_area_str.replace(')', '')
+    id_area_str = id_area_str.replace(',', '')
+    query = 'INSERT INTO usuarios(nombre_usuario, id_persona_fk, id_area_fk, contraseña) VALUES ('+'"'+nombre_usuario+'",'+id_persona_str+','+id_area_str+','+'"'+contraseña+'"'+')'
+    print(query)
+    cur.execute(query)
+    mysql.connection.commit()
+    return(jsonify("Ok!"))
+
+# -- VER PERSONAS --
+def personObj(row):
+    return {
+        "id" : row[0],
+        "nombre_persona" : row[1],
+        "apellido_persona" : row[2],
+        "dni_persona" : row[3],
+        "tipo_persona" : row[4]
+    }
+
+@app.route('/ver_personas')
+def ver_personas():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM personas')
+    usuarios = cur.fetchall()
+    usuarios = [personObj(x) for x in usuarios]
+    return(jsonify(usuarios))
+
 
 # -- VER USUARIOS --
 @app.route('/ver_usuarios')
