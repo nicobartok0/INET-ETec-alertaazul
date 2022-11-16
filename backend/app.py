@@ -19,6 +19,7 @@ def crear_area():
     cur = mysql.connection.cursor()
     cur.execute('INSERT INTO areas(nombre) VALUES ('+ '"' + content + '"' +')')
     mysql.connection.commit()
+    cur.close()
     return(jsonify(content))
 
 # -- CREAR PERSONA --
@@ -29,9 +30,11 @@ def crear_persona():
     dni = request.json['dni_persona']
     tipo = request.json['tipo_persona']
     cur = mysql.connection.cursor()
-    print('INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'",'+'"'+apellido+'",'+dni+','+'"'+tipo+'"'+')')
-    cur.execute('INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'"'+'"'+apellido+'"'+'"'+dni+'"'+'"'+tipo+'"'+')')
+    query = 'INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'",'+'"'+apellido+'",'+dni+','+'"'+tipo+'"'+')'
+    print(query)
+    cur.execute(query)
     mysql.connection.commit()
+    cur.close()
     return(jsonify('Ok!'))
 
 # -- CREAR USUARIO --
@@ -40,8 +43,8 @@ def crear_usuario():
     nombre_usuario = request.json['nombre_usuario']
     contraseña = request.json['contraseña']
     area = request.json['area']
-    
     cur = mysql.connection.cursor()
+    cur.close()
     cur.execute('INSERT INTO usuarios (nombre_usuario, contraseña, id_area_fk) VALUES (%s, %s, %s)', (nombre_usuario, contraseña, area))
 
 # -- VER USUARIOS --
@@ -50,6 +53,7 @@ def ver_usuarios():
     cur = mysql.connection.cursor()
     cur.execute('SELECT nombre_usuario FROM usuarios')
     usuarios = cur.fetchone()
+    cur.close()
     return(jsonify(usuarios))
 
 # -- VER ALERTAS --
@@ -58,6 +62,7 @@ def ver_alertas():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM alertas')
     alertas = cur.fetchone()
+    cur.close()
     return(jsonify(str(alertas)))
 
 
