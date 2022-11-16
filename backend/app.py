@@ -17,11 +17,22 @@ mysql = MySQL(app)
 def crear_area():
     content = request.json['nombre_area']
     cur = mysql.connection.cursor()
-    #query = 'INSERT INTO areas(nombre) VALUES ('+ '"' + (content) + '"' +')'
-    #print(query)
     cur.execute('INSERT INTO areas(nombre) VALUES ('+ '"' + content + '"' +')')
     mysql.connection.commit()
     return(jsonify(content))
+
+# -- CREAR PERSONA --
+@app.route('/crear_persona', methods=['POST'])
+def crear_persona():
+    nombre = request.json['nombre_persona']
+    apellido = request.json['apellido_persona']
+    dni = request.json['dni_persona']
+    tipo = request.json['tipo_persona']
+    cur = mysql.connection.cursor()
+    print('INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'",'+'"'+apellido+'",'+dni+','+'"'+tipo+'"'+')')
+    cur.execute('INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'"'+'"'+apellido+'"'+'"'+dni+'"'+'"'+tipo+'"'+')')
+    mysql.connection.commit()
+    return(jsonify('Ok!'))
 
 # -- CREAR USUARIO --
 @app.route('/crear_usuario', methods=['POST'])
@@ -38,7 +49,7 @@ def crear_usuario():
 def ver_usuarios():
     cur = mysql.connection.cursor()
     cur.execute('SELECT nombre_usuario FROM usuarios')
-    usuarios = cur.fetchall()
+    usuarios = cur.fetchone()
     return(jsonify(usuarios))
 
 # -- VER ALERTAS --
