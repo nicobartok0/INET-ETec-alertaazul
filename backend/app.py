@@ -20,7 +20,7 @@ def crear_area():
     cur.execute('INSERT INTO areas(nombre) VALUES ('+ '"' + content + '"' +')')
     mysql.connection.commit()
     cur.close()
-    return(jsonify(content))
+    return(jsonify('Ok!'))
 
 # -- CREAR PERSONA --
 @app.route('/crear_persona', methods=['POST'])
@@ -44,6 +44,7 @@ def crear_usuario():
     contraseña = request.json['contraseña']
     area = request.json['area']
     dni_persona = request.json['dni_persona']
+    rol = request.json['rol']
     cur = mysql.connection.cursor()
     cur.execute('SELECT id_persona FROM personas WHERE dni_persona = %s' % (dni_persona))
     id_persona = cur.fetchone()
@@ -57,7 +58,7 @@ def crear_usuario():
     id_area_str = id_area_str.replace('(', '')
     id_area_str = id_area_str.replace(')', '')
     id_area_str = id_area_str.replace(',', '')
-    query = 'INSERT INTO usuarios(nombre_usuario, id_persona_fk, id_area_fk, contraseña) VALUES ('+'"'+nombre_usuario+'",'+id_persona_str+','+id_area_str+','+'"'+contraseña+'"'+')'
+    query = 'INSERT INTO usuarios(nombre_usuario, id_persona_fk, id_area_fk, contraseña, rol) VALUES ('+'"'+nombre_usuario+'",'+id_persona_str+','+id_area_str+','+'"'+contraseña+'",'+'"'+rol+'"'+')'
     print(query)
     cur.execute(query)
     mysql.connection.commit()
@@ -83,22 +84,46 @@ def ver_personas():
 
 
 # -- VER USUARIOS --
+def userObj(row):
+    return {
+        "id" : row[0],
+        "nombre_usuario" : row[1],
+        "id_persona_fk": row[2],
+        "id_area_fk": row[3],
+        "contraseña": row[4]
+    }
 @app.route('/ver_usuarios')
 def ver_usuarios():
     cur = mysql.connection.cursor()
-    cur.execute('SELECT nombre_usuario FROM usuarios')
-    usuarios = cur.fetchone()
+    cur.execute('SELECT * FROM usuarios')
+    usuarios = cur.fetchall()
+    print(usuarios)
+    usuarios = [userObj(x) for x in usuarios]
     cur.close()
     return(jsonify(usuarios))
 
 # -- VER ALERTAS --
+def alertaObj(row):
+    return {
+        "id" : row[0],
+        "id_usuario_fk" : row[1],
+        "origen": row[2],
+        "hora_inicio": row[3],
+        "hora_fin": row[4],
+        "estado": row[5],
+        "fecha_inicio": row[6],
+        "fecha_fin": row[7],
+        "tipo": row[8]
+    }
+
 @app.route('/ver_alertas')
 def ver_alertas():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM alertas')
-    alertas = cur.fetchone()
+    alertas = cur.fetchall()
+    alertas = [userObj(x) for x in alertas]
     cur.close()
-    return(jsonify(str(alertas)))
+    return(jsonify(json.dumps(alertas, indent=4, sort_keys=True, default=str)))
 
 
 

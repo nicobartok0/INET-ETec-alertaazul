@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 18:59:07
+-- Tiempo de generación: 16-11-2022 a las 15:25:09
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -78,7 +78,11 @@ INSERT INTO `areas` (`id`, `nombre`) VALUES
 CREATE TABLE `fichas` (
   `id_ficha` int(11) NOT NULL,
   `id_persona_fk` int(11) NOT NULL,
-  `datos_medicos` text NOT NULL
+  `peso` int(11) NOT NULL,
+  `temperatura` int(11) NOT NULL,
+  `presion` int(11) NOT NULL,
+  `enfermedades_preexistentes` varchar(100) NOT NULL,
+  `observaciones` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -91,16 +95,16 @@ CREATE TABLE `personas` (
   `id_persona` int(11) NOT NULL,
   `nombre_persona` varchar(255) NOT NULL,
   `apellido_persona` varchar(255) NOT NULL,
-  `dni_persona` int(11) NOT NULL,
-  `tipo_persona` varchar(255) NOT NULL
+  `dni_persona` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `personas`
 --
 
-INSERT INTO `personas` (`id_persona`, `nombre_persona`, `apellido_persona`, `dni_persona`, `tipo_persona`) VALUES
-(1, 'John', 'Doe', 12345678, 'Paciente');
+INSERT INTO `personas` (`id_persona`, `nombre_persona`, `apellido_persona`, `dni_persona`) VALUES
+(1, 'John', 'Doe', 12345678),
+(3, 'José', 'Gomez', 32298876);
 
 -- --------------------------------------------------------
 
@@ -113,15 +117,17 @@ CREATE TABLE `usuarios` (
   `nombre_usuario` varchar(255) NOT NULL,
   `id_persona_fk` int(11) NOT NULL,
   `id_area_fk` int(11) NOT NULL,
-  `contraseña` varchar(255) NOT NULL
+  `contraseña` varchar(255) NOT NULL,
+  `rol` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `id_persona_fk`, `id_area_fk`, `contraseña`) VALUES
-(1, 'johndoeuser', 1, 1, '123321');
+INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `id_persona_fk`, `id_area_fk`, `contraseña`, `rol`) VALUES
+(1, 'johndoeuser', 1, 1, '123321', ''),
+(4, 'josegomezuser', 3, 26, '123', 'paciente');
 
 --
 -- Índices para tablas volcadas
@@ -187,13 +193,13 @@ ALTER TABLE `fichas`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
