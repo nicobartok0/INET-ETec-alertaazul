@@ -220,6 +220,33 @@ def ver_alertas():
     cur.close()
     return(jsonify(json.dumps(alertas, default=str)))
 
+# -- VER ALERTAS POR ÁREA --
+def alertaObjFiltro(row):
+    return {
+        "origen" : row[0],
+        "hora_inicio" : row[1],
+        "hora_fin": row[2],
+        "estado": row[3],
+        "fecha_inicio": row[4],
+        "fecha_fin": row[5]
+    }
+
+@app.route('/ver_alertas_por_area')
+def ver_alertas_por_area():
+    origen = request.json['origen']
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT origen, hora_inicio, hora_fin, estado, fecha_inicio, fecha_fin, tipo FROM alertas WHERE origen ="'+origen+'"')
+    alertas = cur.fetchall()
+    alertas = [alertaObjFiltro(x) for x in alertas]
+    cur.execute('SELECT COUNT(id_alerta) FROM alertas WHERE origen="'+origen+'"')
+    total = cur.fetchone()
+    cur.close()
+
+    return(jsonify(
+        alertas = json.dumps(alertas, default=str),
+        total = total
+        ))
+
 # -- VER FICHAS --
 def fichaObj(row):
     return {
