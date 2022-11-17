@@ -67,6 +67,31 @@ def crear_usuario():
     mysql.connection.commit()
     return(jsonify("Ok!"))
 
+# -- CREAR FICHAS --
+@app.route('/crear_ficha', methods=['POST'])
+def crear_ficha():
+    dni_paciente = request.json['dni_paciente']
+    peso = request.json['peso']
+    temperatura = request.json['temperatura']
+    presion = request.json['presion']
+    enfermedades_preexistentes = request.json['enfermedades_preexistentes']
+    observaciones = request.json['observaciones']
+    cur = mysql.connection.cursor()
+    dni_paciente = str(dni_paciente)
+    cur.execute('SELECT id_persona FROM personas WHERE dni_persona = ' + dni_paciente)
+    id_persona_fk = cur.fetchone()
+    id_persona_str = str(id_persona_fk)
+    id_persona_str = id_persona_str.replace('(', '')
+    id_persona_str = id_persona_str.replace(')', '')
+    id_persona_str = id_persona_str.replace(',', '')
+    peso = str(peso)
+    temperatura = str(temperatura)
+    presion = str(presion)
+    query = 'INSERT INTO fichas(id_persona_fk, peso, temperatura, presion, enfermedades_preexistentes, observaciones) VALUES ('+id_persona_str+','+peso+','+temperatura+','+presion+',"'+enfermedades_preexistentes+'","'+observaciones+'")'
+    cur.execute(query)
+    mysql.connection.commit()
+    return(jsonify('Ok!'))
+
 # -- VER PERSONAS --
 def personObj(row):
     return {
@@ -128,6 +153,26 @@ def ver_alertas():
     cur.close()
     return(jsonify(json.dumps(alertas, default=str)))
 
+# -- VER FICHAS --
+def fichaObj(row):
+    return {
+        "id" : row[0],
+        "id_persona_fk" : row[1],
+        "peso": row[2],
+        "temperatura": row[3],
+        "presion": row[4],
+        "enfermedades_preexistentes": row[5],
+        "observaciones": row[6]
+    }
+
+@app.route('/ver_fichas')
+def ver_fichas():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM fichas')
+    fichas = cur.fetchall()
+    fichas = [fichaObj(x) for x in fichas]
+    cur.close()
+    return(jsonify(fichas))
 
 
 
