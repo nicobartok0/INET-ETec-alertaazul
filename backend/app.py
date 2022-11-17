@@ -103,6 +103,25 @@ def emitir_alerta():
     id_usuario_str = str(id_usuario_fk)
     id_usuario_str 
     query = 'INSERT INTO alertas(id_usuario_fk, origen, tipo) VALUES ("'+id_usuario_str+'","'+origen+'","'+tipo+'")'
+    cur.execute(query)
+    mysql.connection.commit()
+    return(jsonify('Ok!'))
+
+# -- DAR DE ALTA ALERTA --
+@app.route('/dar_de_alta', methods=['PUT'])
+def dar_de_alta():
+    id_alerta = request.json['id_alerta']
+    cur = mysql.connection.cursor()
+    id_alerta_str = str(id_alerta)
+    id_alerta_str = id_alerta_str.replace('(', '')
+    id_alerta_str = id_alerta_str.replace(')', '')
+    id_alerta_str = id_alerta_str.replace(',', '')
+    query = 'UPDATE alertas SET estado = "Atendido", hora_fin = DATE_FORMAT(NOW(),"%H%i%s"), fecha_fin = DATE_FORMAT(NOW(),"%Y%m%d") WHERE id_alerta = '+id_alerta_str
+    cur.execute(query)
+    mysql.connection.commit()
+    return(jsonify('Ok!'))
+
+
 
 # -- VER ÁREAS
 def areaObj(row):
