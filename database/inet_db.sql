@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-11-2022 a las 15:13:27
+-- Tiempo de generación: 17-11-2022 a las 15:43:23
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -44,8 +44,16 @@ CREATE TABLE `alertas` (
 --
 
 INSERT INTO `alertas` (`id_alerta`, `id_usuario_fk`, `origen`, `hora_inicio`, `hora_fin`, `estado`, `fecha_inicio`, `fecha_fin`, `tipo`) VALUES
-(1, 1, 'Banio', '00:00:15', '10:32:54', 'Atendido', '0000-00-00', '2022-11-17', 'Emergencia'),
-(3, 4, 'Banio', '10:55:39', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia');
+(3, 4, 'Banio', '10:55:39', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia'),
+(4, 4, 'Banio', '11:26:36', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'normal'),
+(5, 1, 'Cama', '11:26:56', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'normal'),
+(6, 1, 'Cama', '11:26:57', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'normal'),
+(7, 1, 'Cama', '11:26:58', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'normal'),
+(8, 1, 'Cama', '11:27:00', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'normal'),
+(9, 1, 'Cama', '11:27:12', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia'),
+(10, 1, 'Cama', '11:38:57', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia'),
+(11, 1, 'Cama', '11:38:58', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia'),
+(12, 1, 'Cama', '11:38:59', '00:00:00', 'Sin atender', '2022-11-17', '0000-00-00', 'emergencia');
 
 -- --------------------------------------------------------
 
@@ -188,7 +196,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `id_alerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_alerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
