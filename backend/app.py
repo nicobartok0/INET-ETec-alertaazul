@@ -92,7 +92,7 @@ def crear_ficha():
     return(jsonify('Ok!'))
 
 # -- EMITIR ALERTA --
-@app.route('/emitir_alerta')
+@app.route('/emitir_alerta', methods=['POST'])
 def emitir_alerta():
     nombre_usuario = request.json['nombre_usuario']
     origen = request.json['origen']
