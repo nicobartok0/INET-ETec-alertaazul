@@ -241,6 +241,32 @@ def ver_fichas():
     cur.close()
     return(jsonify(fichas))
 
+# -- VER FICHAS POR ID DE PERSONA--
+def fichaObj(row):
+    return {
+        "id" : row[0],
+        "id_persona_fk" : row[1],
+        "peso": row[2],
+        "temperatura": row[3],
+        "presion": row[4],
+        "enfermedades_preexistentes": row[5],
+        "observaciones": row[6]
+    }
+
+@app.route('/ver_fichas_id')
+def ver_fichas_id():
+    id_ficha = request.json['id']
+    id_ficha_str = str(id_ficha)
+    id_ficha_str = id_ficha_str.replace('(', '')
+    id_ficha_str = id_ficha_str.replace(')', '')
+    id_ficha_str = id_ficha_str.replace(',', '')
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM fichas WHERE id_persona_fk = ' + id_ficha_str)
+    fichas = cur.fetchall()
+    fichas = [fichaObj(x) for x in fichas]
+    cur.close()
+    return(jsonify(fichas))
+
 
 
 # -- BUCLE PRINCIPAL DE LA APP --
