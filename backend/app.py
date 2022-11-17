@@ -267,7 +267,33 @@ def ver_fichas_id():
     cur.close()
     return(jsonify(fichas))
 
+# -- VER PORCENTAJE DE REPORTES (CANTIDAD DE LLAMADOS Y ESTADO DE LOS LLAMADOS)
+# -- CANTIDAD DE LLAMADOS: NORMAL Y EMERGENCIA (PROCENTAJE)
+# -- ESTADO DE LOS LLAMADOS: ATENDIDOS Y NO ATENDIDOS (PORCENTAJE)
+@app.route('/datos_reportes')
+def datos_reportes():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT COUNT(id_alerta) FROM alertas WHERE tipo = "normal"')
+    cant_alertas_normales = cur.fetchone()
+    cur.execute('SELECT COUNT(id_alerta) FROM alertas WHERE tipo = "emergencia"')
+    cant_alertas_emergencia = cur.fetchone()
+    cant_total = cant_alertas_normales[0] +cant_alertas_emergencia[0]
+    porcentaje_normales = cant_alertas_normales[0] * 100 / cant_total
+    porcentaje_emergencia = cant_alertas_emergencia[0] * 100 / cant_total
+    cur.execute('SELECT COUNT(id_alerta) FROM alertas WHERE estado = "Atendido"')
+    cant_alertas_atendidas = cur.fetchone()
+    cur.execute('SELECT COUNT(id_alerta) FROM alertas WHERE estado = "Sin atender"')
+    cant_alertas_sinatender = cur.fetchone()
+    cant_total = cant_alertas_atendidas[0] +cant_alertas_sinatender[0]
+    porcentaje_atendidos = cant_alertas_atendidas[0] * 100 / cant_total
+    porcentaje_sinatender = cant_alertas_sinatender[0] * 100 / cant_total
 
+    return(jsonify(
+        normales = porcentaje_normales,
+        emergencia = porcentaje_emergencia,
+        atendidos = porcentaje_atendidos,
+        sin_atender = porcentaje_sinatender
+    ))
 
 # -- BUCLE PRINCIPAL DE LA APP --
 if (__name__) == '__main__':
