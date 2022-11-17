@@ -101,8 +101,11 @@ def emitir_alerta():
     cur.execute('SELECT id_usuario FROM usuarios WHERE nombre_usuario = "' + nombre_usuario +'"')
     id_usuario_fk = cur.fetchone()
     id_usuario_str = str(id_usuario_fk)
-    id_usuario_str 
-    query = 'INSERT INTO alertas(id_usuario_fk, origen, tipo) VALUES ("'+id_usuario_str+'","'+origen+'","'+tipo+'")'
+    id_usuario_str = id_usuario_str.replace('(', '')
+    id_usuario_str = id_usuario_str.replace(')', '')
+    id_usuario_str = id_usuario_str.replace(',', '')
+    query = 'INSERT INTO alertas(id_usuario_fk, origen, hora_inicio, fecha_inicio, tipo) VALUES ("'+id_usuario_str+'","'+origen+'", DATE_FORMAT(NOW(),"%H%i%s"), DATE_FORMAT(NOW(),"%Y%m%d"),"'+tipo+'")'
+    print(query)
     cur.execute(query)
     mysql.connection.commit()
     return(jsonify('Ok!'))
