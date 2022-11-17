@@ -1,6 +1,7 @@
 # --  IMPORTES --
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
+import datetime, json
 
 # -- DEFINICIÓN DE APP COMO OBJETO DE FLASK --
 app = Flask(__name__)
@@ -11,6 +12,8 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'inet_db'
 mysql = MySQL(app)
+
+
 
 # -- CREAR ÁREA --
 @app.route('/crear_area', methods=['POST'])
@@ -121,9 +124,9 @@ def ver_alertas():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM alertas')
     alertas = cur.fetchall()
-    alertas = [userObj(x) for x in alertas]
+    alertas = [alertaObj(x) for x in alertas]
     cur.close()
-    return(jsonify(json.dumps(alertas, indent=4, sort_keys=True, default=str)))
+    return(jsonify(json.dumps(alertas, default=str)))
 
 
 
