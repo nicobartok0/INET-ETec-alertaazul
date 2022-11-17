@@ -31,9 +31,8 @@ def crear_persona():
     nombre = request.json['nombre_persona']
     apellido = request.json['apellido_persona']
     dni = request.json['dni_persona']
-    tipo = request.json['tipo_persona']
     cur = mysql.connection.cursor()
-    query = 'INSERT INTO personas(nombre_persona, apellido_persona, dni_persona, tipo_persona) VALUES ('+'"'+nombre+'",'+'"'+apellido+'",'+dni+','+'"'+tipo+'"'+')'
+    query = 'INSERT INTO personas(nombre_persona, apellido_persona, dni_persona) VALUES ('+'"'+nombre+'",'+'"'+apellido+'",'+dni+')'
     print(query)
     cur.execute(query)
     mysql.connection.commit()
@@ -92,6 +91,33 @@ def crear_ficha():
     mysql.connection.commit()
     return(jsonify('Ok!'))
 
+# -- EMITIR ALERTA --
+@app.route('/emitir_alerta')
+def emitir_alerta():
+    nombre_usuario = request.json['nombre_usuario']
+    origen = request.json['origen']
+    tipo = request.json['tipo']
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT id_usuario FROM usuarios WHERE nombre_usuario = "' + nombre_usuario +'"')
+    id_usuario_fk = cur.fetchone()
+    id_usuario_str = str(id_usuario_fk)
+    id_usuario_str 
+    query = 'INSERT INTO alertas(id_usuario_fk, origen, tipo) VALUES ("'+id_usuario_str+'","'+origen+'","'+tipo+'")'
+
+# -- VER ÁREAS
+def areaObj(row):
+    return {
+        "id" : row[0],
+        "nombre" : row[1]
+    }
+@app.route('/ver_areas')
+def ver_areas():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM areas')
+    areas = cur.fetchall()
+    areas = [areaObj(x) for x in areas]
+    return(jsonify(areas))
+
 # -- VER PERSONAS --
 def personObj(row):
     return {
@@ -124,6 +150,25 @@ def userObj(row):
 def ver_usuarios():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM usuarios')
+    usuarios = cur.fetchall()
+    print(usuarios)
+    usuarios = [userObj(x) for x in usuarios]
+    cur.close()
+    return(jsonify(usuarios))
+
+# -- VER USUARIOS MEDICOS --
+def userObj(row):
+    return {
+        "id" : row[0],
+        "nombre_usuario" : row[1],
+        "id_persona_fk": row[2],
+        "id_area_fk": row[3],
+        "contraseña": row[4]
+    }
+@app.route('/ver_usuarios_medicos')
+def ver_usuarios_medicos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE rol = "medico"')
     usuarios = cur.fetchall()
     print(usuarios)
     usuarios = [userObj(x) for x in usuarios]
