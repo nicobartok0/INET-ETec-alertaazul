@@ -299,7 +299,7 @@ def datos_reportes():
 @app.route('/promedio_dias')
 def promedio_dias():
     cur = mysql.connection.cursor()
-    cur.execute('SELECT AVG(DATEDIFF(fecha_inicio, fecha_fin)) FROM alertas AS days WHERE estado="Atendido"')
+    cur.execute('SELECT AVG(DATEDIFF(fecha_fin, fecha_inicio)) FROM alertas AS days WHERE estado="Atendido"')
     promedio = cur.fetchall()
     return(jsonify(promedio))
 
